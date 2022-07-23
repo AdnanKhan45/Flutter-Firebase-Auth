@@ -16,14 +16,24 @@ class HomePage extends StatelessWidget {
           onTap: () {
             FirebaseAuth.instance.signOut();
           },
-          child: Container(
-            width: 120,
-            height: 35,
-            decoration: BoxDecoration(
-                color: Colors.green,
-                borderRadius: BorderRadius.circular(10)
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text("email :${FirebaseAuth.instance.currentUser!.email}"),
+                SizedBox(height: 10,),
+                Container(
+                  width: 120,
+                  height: 35,
+                  decoration: BoxDecoration(
+                      color: Colors.green,
+                      borderRadius: BorderRadius.circular(10)
+                  ),
+                  child: Center(child: Text("Logout", style: TextStyle(fontSize: 15, color: Colors.white),) ,),
+                ),
+              ],
             ),
-            child: Center(child: Text("Logout", style: TextStyle(fontSize: 15, color: Colors.white),) ,),
           ),
         ),
       ),
