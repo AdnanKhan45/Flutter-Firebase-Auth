@@ -1,15 +1,16 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatefulWidget {
+class SignUpPage extends StatefulWidget {
   final VoidCallback onTapClickListener;
-  const LoginPage({Key? key, required this.onTapClickListener}) : super(key: key);
+
+  const SignUpPage({Key? key, required this.onTapClickListener}) : super(key: key);
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<SignUpPage> createState() => _SignUpPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _SignUpPageState extends State<SignUpPage> {
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
 
@@ -26,7 +27,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Login"),
+        title: Text("Sign Up"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -48,7 +49,7 @@ class _LoginPageState extends State<LoginPage> {
           Center(
             child: InkWell(
               onTap: () {
-                _signInUser();
+                _signUpUser();
               },
               child: Container(
                 width: 120,
@@ -56,7 +57,7 @@ class _LoginPageState extends State<LoginPage> {
                 decoration: BoxDecoration(color: Colors.green, borderRadius: BorderRadius.circular(10)),
                 child: Center(
                   child: Text(
-                    "Login",
+                    "Sign Up",
                     style: TextStyle(fontSize: 15, color: Colors.white),
                   ),
                 ),
@@ -78,18 +79,22 @@ class _LoginPageState extends State<LoginPage> {
                   ],
                 )
               : Container(),
-          SizedBox(height: 10,),
+          SizedBox(
+            height: 10,
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text("New to the application?"),
-              SizedBox(width: 10,),
+              Text("Already have an account?"),
+              SizedBox(
+                width: 10,
+              ),
               InkWell(
                 onTap: widget.onTapClickListener,
-                child: Text("Sign Up", style: TextStyle(
-                  color: Colors.green, fontWeight: FontWeight.bold,
-                  decoration: TextDecoration.underline
-                ),),
+                child: Text(
+                  "Sign In",
+                  style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold, decoration: TextDecoration.underline),
+                ),
               )
             ],
           )
@@ -98,23 +103,41 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Future _signInUser() async {
+  Future _signUpUser() async {
     setState(() {
       _isSigning = true;
     });
     try {
-      await FirebaseAuth.instance
-          .signInWithEmailAndPassword(
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: _emailController.text,
         password: _passwordController.text,
-      )
-          .then((value) {
+      ).then((value) {
         setState(() {
           _isSigning = false;
         });
       });
     } catch (e) {
-      print("some error $e");
+      print("error occured $e");
     }
   }
+
+// Future _signInUser() async {
+//   setState(() {
+//     _isSigning = true;
+//   });
+//   try {
+//     await FirebaseAuth.instance
+//         .signInWithEmailAndPassword(
+//       email: _emailController.text,
+//       password: _passwordController.text,
+//     )
+//         .then((value) {
+//       setState(() {
+//         _isSigning = false;
+//       });
+//     });
+//   } catch (e) {
+//     print("some error $e");
+//   }
+// }
 }
