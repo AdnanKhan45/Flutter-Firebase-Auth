@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_firebase_auth/presentation/cubit/google_sign_in/google_sign_in_cubit.dart';
 
 class LoginPage extends StatefulWidget {
   final VoidCallback onTapClickListener;
@@ -92,11 +94,17 @@ class _LoginPageState extends State<LoginPage> {
                 ),),
               )
             ],
-          )
+          ),
+          SizedBox(height: 10,),
+          ElevatedButton(onPressed: () {
+            final provider = BlocProvider.of<GoogleSignInCubit>(context);
+            provider.signInWithGoogle();
+          }, child: Text("Sign In with Google"))
         ]),
       ),
     );
   }
+
 
   Future _signInUser() async {
     setState(() {
